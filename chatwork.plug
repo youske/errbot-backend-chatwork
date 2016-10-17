@@ -1,0 +1,12 @@
+[Core]
+Name = Chatwork
+Module = chatwork
+
+[Python]
+Version = 3
+
+[Documentation]
+Description = ErrBot chatwork backend
+
+
+[ErrBot]
