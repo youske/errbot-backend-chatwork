@@ -213,7 +213,10 @@ class ChatworkBackend(ErrBot):
     # using chatwork api latest maessage
     def follow_room( self, room ):
 
-        def background():
+        def background(_room,_interval,_refresh):
+            room = _room
+            interval = _interval
+            refresh = _refresh
             while True:
                 resmsgs = self.readAPIRequest('rooms/%s/messages' % room._idd)
                 if resmsgs != None and len(resmsgs)>0 :
@@ -223,11 +226,11 @@ class ChatworkBackend(ErrBot):
                         msg.to = self.bot_identifier
                         msg.frm = ChatworkRoomOccupant.build_json(room,from_user)
                         self.recv_message(msg)
-                        time.sleep(self._msg_intervals )
+                        time.sleep( interval )
                                 
-                time.sleep( self._msg_refresh )
+                time.sleep( refresh )
         
-        t = threading.Thread(target = background )
+        t = threading.Thread( target=background, args=(room,self._msg_intervals,self._msg_refresh) )
         t.daemon = False
         time.sleep( self._msg_intervals )
         t.start()
